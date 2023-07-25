@@ -1,6 +1,6 @@
 [submodule "libedgetpu"]
   path = libedgetpu
-  url = https://github.com/google-coral/libedgetpu
+  url = https://github.com/jhansom/libedgetpu
 [submodule "test_data"]
   path = test_data
-  url = https://github.com/google-coral/test_data
+  url = https://github.com/jhansom/test_data

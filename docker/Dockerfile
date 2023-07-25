@@ -15,7 +15,6 @@ RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y \
       sudo \
       debhelper \
-      python \
       python3-all \
       python3-numpy \
       python3-setuptools \
@@ -50,6 +49,12 @@ RUN if grep 'Bionic Beaver' /etc/os-release > /dev/null; then \
         && DEBIAN_FRONTEND=noninteractive apt-get install -y gcc-9 g++-9; \
     fi
 
+# Jammy Jellyfish == Ubuntu 22.04
+RUN if grep 'Jammy Jellyfish' /etc/os-release > /dev/null; then \
+      apt-get install -y python-is-python3; else \
+      apt-get install -y python; \
+    fi
+
 # On older Ubuntu these packages can't be installed in a multi-arch fashion.
 # Instead we download the debs and extract them for build time linking.
 RUN mkdir /debs && chmod a=rwx /debs && cd /debs && apt-get update && apt-get download \
@@ -78,7 +83,7 @@ RUN git clone https://github.com/raspberrypi/tools.git && \
     cd tools && \
     git reset --hard 4a335520900ce55e251ac4f420f52bf0b2ab6b1f
 
-ARG BAZEL_VERSION=4.0.0
+ARG BAZEL_VERSION=4.2.2
 RUN wget -O /bazel https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
     bash /bazel && \
     rm -f /bazel
